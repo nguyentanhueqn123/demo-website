@@ -1,0 +1,8 @@
+{
+  "name": "app-quanly",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "745ce248"
+}
