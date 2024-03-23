@@ -12,7 +12,9 @@ const AdminContainer: React.FC<AdminContainerProps> = ({
 }) => {
   return (
     <div className={classnames("w-full md:pl-[271px] min-h-screen", className)}>
-      <div className="py-25 max-w-screen-2xl mt-[70px]">{children}</div>
+      <div className="py-25 max-w-screen-2xl mt-[70px] p-[16px] md:p-[26px]">
+        {children}
+      </div>
     </div>
   );
 };

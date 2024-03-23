@@ -7,15 +7,21 @@ import { FiMenu, FiX } from "react-icons/fi";
 const Header: React.FC = () => {
   const [open, setOpen] = useState(false);
 
+  const toggleSidebar = () => {
+    setOpen(!open);
+  };
+
+  const hideSidebar = () => {
+    setOpen(false);
+  };
+
   return (
     <div>
       <div className="w-full relative">
         <div className="bg-white h-[70px] fixed z-50 top-0 left-0 right-0 shadow-md flex flex-row justify-between items-center md:left-[271px] px-3 md:px-7">
           <div
             className="flex items-center cursor-pointer text-[25px]"
-            onClick={() => {
-              setOpen(!open);
-            }}
+            onClick={toggleSidebar}
           >
             <i>{open ? <FiX /> : <FiMenu />}</i>
           </div>
@@ -41,7 +47,7 @@ const Header: React.FC = () => {
             open ? "top-0" : "top-[-1000px]"
           }`}
         >
-          <Sidebar />
+          <Sidebar hideSidebar={hideSidebar} />
         </div>
       </div>
     </div>

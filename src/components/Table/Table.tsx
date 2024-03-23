@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Table, Pagination } from "react-bootstrap";
+import "./Table.sass";
 
 interface TableColumn {
   header: string;
@@ -55,7 +56,7 @@ const CustomTable: React.FC<Props> = ({ data, columns, itemsPerPage }) => {
   return (
     <>
       <Table striped bordered hover>
-        <thead>
+        <thead className="bg-thead">
           <tr>
             {/* <th>#</th> */}
             {columns.map((column, index) => (

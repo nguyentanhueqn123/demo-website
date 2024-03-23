@@ -40,4 +40,17 @@ export const hotelData = [
         hotel_room: 17856,
         available_rooms: 13785
     },
+    {
+        id: 3,
+        property: "SPH4",
+        total_room_in_hotel: 450,
+        room_revenue: 210458,
+        FB_revenue: 560000,
+        other_revenue: 31547.30,
+        total_revenue: 752000,
+        Occ: 22.80,
+        ADR: 57.59,
+        hotel_room: 17856,
+        available_rooms: 13785
+    },
 ];

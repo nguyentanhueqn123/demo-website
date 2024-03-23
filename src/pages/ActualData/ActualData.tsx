@@ -7,7 +7,16 @@ import CheckBox from "../../components/Checkbox/Checkbox";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 import BarChart from "../../components/Chart/Chart";
-import { IonContent } from "@ionic/react";
+import { IonButton, IonContent, IonIcon } from "@ionic/react";
+import Toast from "../../components/Toast/Toast";
+import {
+  AiFillDollarCircle,
+  AiFillCreditCard,
+  AiFillLayout,
+  AiFillGift,
+} from "react-icons/ai";
+import { trashBinOutline } from "ionicons/icons";
+import "./ActualData.scss";
 
 const ActualData: React.FC = () => {
   const hotels = useSelector((state: any) => state.hotel);
@@ -19,6 +28,8 @@ const ActualData: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>(""); // Từ khóa tìm kiếm
   const history = useHistory();
   const location = useLocation();
+
+  const showToast = Toast();
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -195,88 +206,117 @@ const ActualData: React.FC = () => {
     0
   );
 
+  // Hàm xử lý khi click vào nút "Clear Filter"
+  const handleClearFilter = () => {
+    setSelectedProperties([]);
+    setSearchTerm("");
+    setSelectedProperties([]);
+
+    const queryParams = new URLSearchParams();
+    history.push({ search: queryParams.toString() });
+    showToast("Filter cleared successfully", "success", "top");
+  };
+
   return (
     <IonContent>
       <AdminContainer>
-        <div className="bg-red-400">
-          <h1>Actual Data</h1>
-        </div>
+        <h4 className="font-bold my-2">Actual Data</h4>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-x-3 gap-y-3 md:gap-x-5 text-center">
-          <div className="bg-[#74E291]  rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
-            <div className="flex flex-row md:flex-col">
-              <i className="bx bx-layer text-2xl md:text-4xl text-white"></i>
-              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
-                Total Room in Hotel:
-              </p>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-x-3 gap-y-3 md:gap-x-5 text-center my-4">
+          <div className="bg-[#74E291] p-3 md:p-3 rounded-lg flex flex-col items-center justify-center shadow-md">
+            <div className="flex flex-row md:flex-col justify-center items-center">
+              <AiFillLayout className="text-2xl md:text-4xl text-white" />
+              <span className="ml-2 text-white">Total Room in Hotel</span>
             </div>
-            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+            <span className="text-white font-bold text-xl md:text-2xl">
               $ {roundPriceToInt(totalRoomInHotel) || 0}
-            </p>
+            </span>
           </div>
-          <div className="bg-[#8ECDDD] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
-            <div className="flex flex-row md:flex-col">
-              <i className="bx bx-cart text-2xl md:text-4xl text-white"></i>
-              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
-                Total Revenue
-              </p>
+
+          <div className="bg-[#8ECDDD] p-3 md:p-3 rounded-lg flex flex-col items-center justify-center shadow-md">
+            <div className="flex flex-row md:flex-col justify-center items-center">
+              <AiFillDollarCircle className="text-2xl md:text-4xl text-white" />
+              <span className="ml-2 text-white">Total Revenue</span>
             </div>
-            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+            <span className="text-white font-bold text-xl md:text-2xl">
               $ {roundPriceToInt(totalRevenue) || 0}
-            </p>
+            </span>
           </div>
-          <div className="bg-[#E6B9DE] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
-            <div className="flex flex-row md:flex-col">
-              <i className="bx bxs-credit-card text-2xl md:text-4xl text-white"></i>
-              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
-                Room Revenue
-              </p>
+
+          <div className="bg-[#E6B9DE] p-3 md:p-3 rounded-lg flex flex-col items-center justify-center shadow-md">
+            <div className="flex flex-row md:flex-col justify-center items-center">
+              <AiFillCreditCard className="text-2xl md:text-4xl text-white" />
+              <span className="ml-2 text-white">Room Revenue</span>
             </div>
-            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
-              {roundPriceToInt(totalRoomRevenue) || 0} VND
-            </p>
+            <span className="text-white font-bold text-xl md:text-2xl">
+              $ {roundPriceToInt(totalRoomRevenue) || 0}
+            </span>
           </div>
-          <div className="bg-[#FFDD95] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
-            <div className="flex flex-row md:flex-col">
-              <i className="bx bxs-credit-card text-2xl md:text-4xl text-white"></i>
-              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
-                F&B Revenue
-              </p>
+
+          <div className="bg-[#D7C0AE]  p-3 md:p-3 rounded-lg flex flex-col items-center justify-center shadow-md">
+            <div className="flex flex-row md:flex-col justify-center items-center">
+              <AiFillGift className="text-2xl md:text-4xl text-white" />
+              <span className="ml-2 text-white">F&B Revenue</span>
             </div>
-            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
-              {roundPriceToInt(totalFBRevenue) || 0} VND
-            </p>
+            <span className="text-white font-bold text-xl md:text-2xl">
+              $ {roundPriceToInt(totalFBRevenue) || 0}
+            </span>
           </div>
         </div>
 
         <div className="">
-          <p className="text-lg">Property</p>
-          <div className="md:px-5 flex justify-between md:block">
-            <input
-              type="text"
-              placeholder="Search by property"
-              value={searchTerm}
-              onChange={handleSearchChange}
-              className="border border-gray-300 px-2 py-1 rounded-md"
-            />
-            {hotels?.map((item: any, index: any) => (
-              <CheckBox
-                key={index}
-                id={`property-${index}`}
-                label={item?.property}
-                className="capitalize"
-                checked={selectedProperties.includes(item?.property)}
-                onChange={(checked) =>
-                  handleChangeCheckbox(item?.property, checked)
-                }
+          <div className="w-full md:p-5 rounded-lg md:bg-[#F2F2F2] grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4 mt-2 mb-4">
+            <div className="w-full">
+              <span className="flex text-base font-bold mb-2">Search</span>
+              <input
+                type="text"
+                placeholder="Search by property"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="w-full h-[40px] border border-gray-300 px-3 py-2 rounded-md"
               />
-            ))}
+            </div>
+            <div className="w-full">
+              <span className="flex text-base font-bold mb-2">
+                Filter by Property
+              </span>
+              <div className="flex justify-between">
+                {hotels?.map((item: any, index: any) => (
+                  <CheckBox
+                    key={index}
+                    id={`property-${index}`}
+                    label={item?.property}
+                    className="capitalize"
+                    checked={selectedProperties.includes(item?.property)}
+                    onChange={(checked) =>
+                      handleChangeCheckbox(item?.property, checked)
+                    }
+                  />
+                ))}
+              </div>
+              <IonButton
+                size="small"
+                className="w-full mt-3"
+                onClick={handleClearFilter}
+              >
+                <IonIcon slot="start" icon={trashBinOutline}></IonIcon>
+                Clear Filter
+              </IonButton>
+            </div>
           </div>
         </div>
+        <div className="overflow-x-auto-custome">
+          <CustomTable
+            data={searchedHotels}
+            columns={columns}
+            itemsPerPage={3}
+          />
+        </div>
 
-        <CustomTable data={searchedHotels} columns={columns} itemsPerPage={3} />
-
-        <div className="">
+        <div className="p-4 md:mt-8 my-8 rounded-lg shadow-xs bg-white border shadow-sm">
+          <p className="opacity-80 font-medium text-lg mb-5">
+            The chart shows revenue by property
+          </p>
           <BarChart data={hotels} />
         </div>
       </AdminContainer>

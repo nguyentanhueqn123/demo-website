@@ -129,7 +129,11 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     });
   };
 
-  return <svg id="bar-chart" className=" bg-red-100 mx-auto"></svg>;
+  return (
+    <div className="w-full overflow-x-auto-custome">
+      <svg id="bar-chart" className="bg-[#f1f1f1] mx-auto rounded-lg"></svg>
+    </div>
+  );
 };
 
 export default BarChart;
