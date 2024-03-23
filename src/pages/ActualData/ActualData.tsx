@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import CheckBox from "../../components/Checkbox/Checkbox";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDebounce } from "use-debounce";
+import BarChart from "../../components/Chart/Chart";
+import { IonContent } from "@ionic/react";
 
 const ActualData: React.FC = () => {
   const hotels = useSelector((state: any) => state.hotel);
@@ -96,19 +98,19 @@ const ActualData: React.FC = () => {
   };
 
   const columns = [
+    // {
+    //   header: "#",
+    //   accessor: "id",
+    //   Cell: (index: number) => (
+    //     <input
+    //       type="checkbox"
+    //       checked={selectedHotels.includes(hotels[index].id)}
+    //       onChange={() => toggleItemSelection(hotels[index].id)}
+    //     />
+    //   ),
+    // },
     {
-      header: "#",
-      accessor: "id",
-      Cell: (index: number) => (
-        <input
-          type="checkbox"
-          checked={selectedHotels.includes(hotels[index].id)}
-          onChange={() => toggleItemSelection(hotels[index].id)}
-        />
-      ),
-    },
-    {
-      header: "Id",
+      header: "ID",
       accessor: "id",
     },
     {
@@ -172,38 +174,113 @@ const ActualData: React.FC = () => {
     },
   ];
 
-  return (
-    <AdminContainer>
-      <div className="bg-red-400">
-        <h1>Actual Data</h1>
-      </div>
-      <div className="">
-        <p className="text-lg">Property</p>
-        <div className="md:px-5 flex justify-between md:block">
-          <input
-            type="text"
-            placeholder="Search by property"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="border border-gray-300 px-2 py-1 rounded-md"
-          />
-          {hotels?.map((item: any, index: any) => (
-            <CheckBox
-              key={index}
-              id={`property-${index}`}
-              label={item?.property}
-              className="capitalize"
-              checked={selectedProperties.includes(item?.property)}
-              onChange={(checked) =>
-                handleChangeCheckbox(item?.property, checked)
-              }
-            />
-          ))}
-        </div>
-      </div>
+  // total các property tương ứng
+  const totalRoomInHotel: number = hotels.reduce(
+    (total: number, hotel: any) => total + hotel.total_room_in_hotel,
+    0
+  );
 
-      <CustomTable data={searchedHotels} columns={columns} itemsPerPage={3} />
-    </AdminContainer>
+  const totalRoomRevenue: number = hotels.reduce(
+    (total: number, hotel: any) => total + hotel.room_revenue,
+    0
+  );
+
+  const totalFBRevenue: number = hotels.reduce(
+    (total: number, hotel: any) => total + hotel.FB_revenue,
+    0
+  );
+
+  const totalRevenue: number = hotels.reduce(
+    (total: number, hotel: any) => total + hotel.total_revenue,
+    0
+  );
+
+  return (
+    <IonContent>
+      <AdminContainer>
+        <div className="bg-red-400">
+          <h1>Actual Data</h1>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-x-3 gap-y-3 md:gap-x-5 text-center">
+          <div className="bg-[#74E291]  rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
+            <div className="flex flex-row md:flex-col">
+              <i className="bx bx-layer text-2xl md:text-4xl text-white"></i>
+              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
+                Total Room in Hotel:
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+              $ {roundPriceToInt(totalRoomInHotel) || 0}
+            </p>
+          </div>
+          <div className="bg-[#8ECDDD] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
+            <div className="flex flex-row md:flex-col">
+              <i className="bx bx-cart text-2xl md:text-4xl text-white"></i>
+              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
+                Total Revenue
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+              $ {roundPriceToInt(totalRevenue) || 0}
+            </p>
+          </div>
+          <div className="bg-[#E6B9DE] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
+            <div className="flex flex-row md:flex-col">
+              <i className="bx bxs-credit-card text-2xl md:text-4xl text-white"></i>
+              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
+                Room Revenue
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+              {roundPriceToInt(totalRoomRevenue) || 0} VND
+            </p>
+          </div>
+          <div className="bg-[#FFDD95] rounded-lg flex flex-col items-center justify-center py-5 shadow-lg">
+            <div className="flex flex-row md:flex-col">
+              <i className="bx bxs-credit-card text-2xl md:text-4xl text-white"></i>
+              <p className="md:text-lg md:mt-1 ml-2 md:ml-0 text-white">
+                F&B Revenue
+              </p>
+            </div>
+            <p className="text-xl md:text-2xl font-bold mt-2 text-white">
+              {roundPriceToInt(totalFBRevenue) || 0} VND
+            </p>
+          </div>
+        </div>
+
+        <div className="">
+          <p className="text-lg">Property</p>
+          <div className="md:px-5 flex justify-between md:block">
+            <input
+              type="text"
+              placeholder="Search by property"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              className="border border-gray-300 px-2 py-1 rounded-md"
+            />
+            {hotels?.map((item: any, index: any) => (
+              <CheckBox
+                key={index}
+                id={`property-${index}`}
+                label={item?.property}
+                className="capitalize"
+                checked={selectedProperties.includes(item?.property)}
+                onChange={(checked) =>
+                  handleChangeCheckbox(item?.property, checked)
+                }
+              />
+            ))}
+          </div>
+        </div>
+
+        <CustomTable data={searchedHotels} columns={columns} itemsPerPage={3} />
+
+        <div className="">
+          <BarChart data={hotels} />
+        </div>
+      </AdminContainer>
+    </IonContent>
   );
 };
 
