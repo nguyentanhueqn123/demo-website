@@ -37,7 +37,8 @@
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
     "react-table": "^7.7.0",
-    "sass": "^1.61.0"
+    "sass": "^1.61.0",
+    "use-debounce": "^10.0.0"
   },
   "devDependencies": {
     "@capacitor/cli": "5.5.0",

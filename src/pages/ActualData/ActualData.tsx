@@ -1,22 +1,75 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AdminContainer from "../../components/AdminContainer/AdminContainer";
-import { hotelData } from "../../data/hotelData";
 import CustomTable from "../../components/Table/Table";
 import { formatPrice, roundPriceToInt } from "../../utils/formatPrice";
-import Toast from "../../components/Toast/Toast";
+import { useSelector } from "react-redux";
+import CheckBox from "../../components/Checkbox/Checkbox";
+import { useHistory, useLocation } from "react-router-dom";
+import { useDebounce } from "use-debounce";
 
 const ActualData: React.FC = () => {
-  const showToast = Toast();
+  const hotels = useSelector((state: any) => state.hotel);
 
-  const totals = hotelData.reduce(
+  const [selectedHotels, setSelectedHotels] = useState<number[]>([]);
+
+  const [selectedProperties, setSelectedProperties] = useState<string[]>([]);
+  const [debouncedProperties] = useDebounce(selectedProperties, 500); // Debounce trong 500ms
+  const [searchTerm, setSearchTerm] = useState<string>(""); // Từ khóa tìm kiếm
+  const history = useHistory();
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const selectedPropertiesFromURL = queryParams.getAll("type");
+    setSelectedProperties(selectedPropertiesFromURL);
+  }, [location]);
+
+  const handleChangeCheckbox = (property: string, checked: boolean) => {
+    let updatedSelectedProperties: string[] = [];
+    if (checked) {
+      updatedSelectedProperties = [...selectedProperties, property];
+    } else {
+      updatedSelectedProperties = selectedProperties.filter(
+        (selectedProperty) => selectedProperty !== property
+      );
+    }
+    setSelectedProperties(updatedSelectedProperties);
+
+    const queryParams = new URLSearchParams();
+    updatedSelectedProperties.forEach((property) =>
+      queryParams.append("type", property)
+    );
+    history.push({ search: queryParams.toString() });
+  };
+
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+    // Update URL
+    history.push(`?typeProp=${event.target.value}`);
+  };
+
+  const filteredHotels =
+    selectedProperties.length > 0
+      ? hotels.filter((hotel: any) =>
+          debouncedProperties.includes(hotel.property)
+        )
+      : hotels;
+
+  const searchedHotels = searchTerm
+    ? filteredHotels.filter((hotel: any) =>
+        hotel.property.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : filteredHotels;
+
+  const totals = searchedHotels.reduce(
     (acc: any, row: any) => {
       acc.total_room_in_hotel += row.total_room_in_hotel;
       acc.room_revenue += row.room_revenue;
       acc.FB_revenue += row.FB_revenue;
       acc.other_revenue += row.other_revenue;
       acc.total_revenue += row.total_revenue;
-      acc.Occ += row.Occ; // Lưu ý: Đối với % Occupancy, bạn có thể cần tính trung bình thay vì tổng
-      acc.ADR += row.ADR; // Lưu ý: Đối với ADR, bạn có thể cần tính trung bình thay vì tổng
+      acc.Occ += row.Occ;
+      acc.ADR += row.ADR;
       acc.hotel_room += row.hotel_room;
       acc.available_rooms += row.available_rooms;
       return acc;
@@ -33,17 +86,30 @@ const ActualData: React.FC = () => {
       available_rooms: 0,
     }
   );
-  const toggleItemSelection = () => {
-    showToast("Cannot be selected", "warning", "top");
+
+  const toggleItemSelection = (id: number) => {
+    const updatedSelectedHotels = selectedHotels.includes(id)
+      ? selectedHotels.filter((hotelId) => hotelId !== id)
+      : [...selectedHotels, id];
+    setSelectedHotels(updatedSelectedHotels);
+    console.log("Selected hotels:", updatedSelectedHotels);
   };
 
   const columns = [
     {
-      header: "",
-      accessor: "",
-      Cell: (value: any) => (
-        <input type="checkbox" checked={false} onChange={toggleItemSelection} />
+      header: "#",
+      accessor: "id",
+      Cell: (index: number) => (
+        <input
+          type="checkbox"
+          checked={selectedHotels.includes(hotels[index].id)}
+          onChange={() => toggleItemSelection(hotels[index].id)}
+        />
       ),
+    },
+    {
+      header: "Id",
+      accessor: "id",
     },
     {
       header: "Property",
@@ -111,7 +177,32 @@ const ActualData: React.FC = () => {
       <div className="bg-red-400">
         <h1>Actual Data</h1>
       </div>
-      <CustomTable data={hotelData} columns={columns} itemsPerPage={3} />
+      <div className="">
+        <p className="text-lg">Property</p>
+        <div className="md:px-5 flex justify-between md:block">
+          <input
+            type="text"
+            placeholder="Search by property"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="border border-gray-300 px-2 py-1 rounded-md"
+          />
+          {hotels?.map((item: any, index: any) => (
+            <CheckBox
+              key={index}
+              id={`property-${index}`}
+              label={item?.property}
+              className="capitalize"
+              checked={selectedProperties.includes(item?.property)}
+              onChange={(checked) =>
+                handleChangeCheckbox(item?.property, checked)
+              }
+            />
+          ))}
+        </div>
+      </div>
+
+      <CustomTable data={searchedHotels} columns={columns} itemsPerPage={3} />
     </AdminContainer>
   );
 };
