@@ -47,7 +47,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
         d3.max(
           data,
           (d) => Math.max(d.room_revenue, d.FB_revenue, d.other_revenue) || 0
-        ),
+        ) as number,
       ])
       .range([height, 0]);
 
@@ -79,12 +79,13 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       barGroups
         .append("rect")
         .attr("x", () => (x.bandwidth() / keys.length) * i)
-        .attr("y", (d) => y(d[key]))
+        .attr("y", (d: any) => y(d[key as keyof typeof d]))
         .attr("width", x.bandwidth() / keys.length)
-        .attr("height", (d) => height - y(d[key]))
-        .attr("fill", color(key))
-        .on("mouseover", function (event, d) {
-          const value = d[key].toFixed(2);
+        .attr("height", (d: any) => height - y(d[key as keyof typeof d]))
+        .attr("fill", () => color(key) as string)
+        .on("mouseover", function (event: MouseEvent, d: (typeof data)[0]) {
+          const value = (d[key as keyof typeof d] as number).toFixed(2);
+
           const label = key.replace("_", " ");
           const labelText = label.replace(/^\w/, (c) => c.toUpperCase());
           const legendLabel = legendLabels[i];
@@ -92,6 +93,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
             .style("visibility", "visible")
             .text(`${legendLabel}: $${value}`);
         })
+
         .on("mousemove", function (event) {
           tooltip
             .style("top", event.pageY - 10 + "px")
@@ -118,7 +120,8 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
         .attr("y", i * 20)
         .attr("width", 10)
         .attr("height", 10)
-        .attr("fill", color(keys[i]));
+        // .attr("fill", color(keys[i]));
+        .attr("fill", () => color(label) as string);
 
       legend
         .append("text")
