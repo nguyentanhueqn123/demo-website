@@ -97,42 +97,60 @@ const ReservationForecast: React.FC = () => {
     <IonContent>
       <AdminContainer>
         <h4 className="font-bold my-2">Reservation Forecast</h4>
-        <div>
-          <IonCheckbox
-            checked={selectedPeriods.includes("this month")}
-            onIonChange={(e) =>
-              handleChangeCheckbox("this month", e.detail.checked)
-            }
-          />
-          <label>This Month</label>
+        <div className="grid grid-cols-1 md:grid-cols-2 mt-4">
+          <div className="px-4 py-3 mb-4 rounded-lg shadow-md bg-[#F2F2F2]">
+            <span className="flex text-base font-bold mb-2">Filter</span>
+            <div>
+              <IonCheckbox
+                labelPlacement="end"
+                checked={selectedPeriods.includes("this month")}
+                onIonChange={(e) =>
+                  handleChangeCheckbox("this month", e.detail.checked)
+                }
+              >
+                This Month
+              </IonCheckbox>
+            </div>
+            <div>
+              <IonCheckbox
+                labelPlacement="end"
+                checked={selectedPeriods.includes("3 months")}
+                onIonChange={(e) =>
+                  handleChangeCheckbox("3 months", e.detail.checked)
+                }
+              >
+                3 Months
+              </IonCheckbox>
+            </div>
+            <div>
+              <IonCheckbox
+                labelPlacement="end"
+                checked={selectedPeriods.includes("6 months")}
+                onIonChange={(e) =>
+                  handleChangeCheckbox("6 months", e.detail.checked)
+                }
+              >
+                6 Months
+              </IonCheckbox>
+            </div>
+          </div>
         </div>
-        <div>
-          <IonCheckbox
-            checked={selectedPeriods.includes("3 months")}
-            onIonChange={(e) =>
-              handleChangeCheckbox("3 months", e.detail.checked)
-            }
-          />
-          <label>3 Months</label>
+        <div className="p-4 md:mt-8 my-8 rounded-lg shadow-xs bg-white border shadow-sm ">
+          <p className="opacity-80 font-medium text-lg">
+            The line chart shows Total Occ. , Arr. Rooms , Dep. Rooms
+          </p>
+          <div className="overflow-x-auto-custome2">
+            <LineChart
+              data={
+                selectedPeriods.length > 0
+                  ? debouncedSelectedPeriods.flatMap((period) =>
+                      filterDataByPeriod(defaultForecastData, period)
+                    )
+                  : defaultForecastData
+              }
+            />
+          </div>
         </div>
-        <div>
-          <IonCheckbox
-            checked={selectedPeriods.includes("6 months")}
-            onIonChange={(e) =>
-              handleChangeCheckbox("6 months", e.detail.checked)
-            }
-          />
-          <label>6 Months</label>
-        </div>
-        <LineChart
-          data={
-            selectedPeriods.length > 0
-              ? debouncedSelectedPeriods.flatMap((period) =>
-                  filterDataByPeriod(defaultForecastData, period)
-                )
-              : defaultForecastData
-          }
-        />
       </AdminContainer>
     </IonContent>
   );

@@ -17,7 +17,8 @@ const Login: React.FC = () => {
   useEffect(() => {
     let token = localStorage.getItem("token");
     if (token) {
-      history.push("/dashboard");
+      // history.push("/dashboard");
+      history.push("/actual-data");
     }
   }, []);
 
@@ -35,7 +36,7 @@ const Login: React.FC = () => {
       localStorage.setItem("token", res.data?.token);
       dispatch(setToken(res.data?.token));
       showToast("Login successfully", "success", "top");
-      history.push("/dashboard");
+      history.push("/actual-data");
     } else {
       if (res && res.status === 401) {
         console.log("error user: ", res.data.error);

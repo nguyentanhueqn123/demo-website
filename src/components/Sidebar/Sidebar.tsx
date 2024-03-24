@@ -15,11 +15,11 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ hideSidebar }) => {
   const leftMenu = [
-    {
-      icon: <FiHome />,
-      label: "Dashboard",
-      link: "/dashboard",
-    },
+    // {
+    //   icon: <FiHome />,
+    //   label: "Dashboard",
+    //   link: "/dashboard",
+    // },
     {
       icon: <FiBarChart2 />,
       label: "Actual Data",

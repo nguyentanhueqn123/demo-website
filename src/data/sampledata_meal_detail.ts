@@ -147,22 +147,7 @@ export const dashboardSampleV0_4MealDetailData = [
 						}
 					},
 					records: {
-						'12:41:19': {
-							room: '1003',
-							guest_names: 'Tien Len',
-							package_code: 'ABF',
-							count: 2,
-							pax: 'adults',
-							remark: ''
-						},
-						'12:41:20': {
-							room: '1003',
-							guest_names: 'Tien Len',
-							package_code: 'ABF',
-							count: 2,
-							pax: 'adults',
-							remark: ''
-						}
+						
 					}
 				}
 			}

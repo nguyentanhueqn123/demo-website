@@ -15,7 +15,7 @@ import "./theme/variables.css";
 
 import Header from "./components/Header/Header";
 import Login from "./pages/Login/Login";
-import Dashboard from "./pages/Dashboard";
+// import Dashboard from "./pages/Dashboard";
 import ActualData from "./pages/ActualData/ActualData";
 import ReservationForecast from "./pages/ReservationForecast/ReservationForecast";
 import PeriodDetail from "./pages/PeriodDetail/PeriodDetail";
@@ -37,7 +37,7 @@ const App: React.FC = () => (
             return localStorage.getItem("token") ? (
               <>
                 <Header />
-                <Route exact path="/dashboard" component={Dashboard} />
+                {/* <Route exact path="/dashboard" component={Dashboard} /> */}
                 <Route exact path="/actual-data" component={ActualData} />
                 <Route
                   exact

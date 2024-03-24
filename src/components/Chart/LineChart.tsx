@@ -22,7 +22,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     svg.selectAll("*").remove(); // Xóa tất cả các phần tử trong SVG trước khi vẽ lại
 
     const margin = { top: 20, right: 30, bottom: 130, left: 50 };
-    const width = 600 - margin.left - margin.right;
+    const width = 1100 - margin.left - margin.right;
     const height = 360 - margin.top - margin.bottom;
 
     svg
@@ -141,7 +141,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="w-full overflow-x-auto-custome relative">
+    <div className="w-full overflow-x-auto-custome2 relative">
       <svg id="line-chart-svg" className="bg-[#f1f1f1] rounded-lg"></svg>
       <div className="opacity-90">
         <p

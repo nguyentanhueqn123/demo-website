@@ -8,8 +8,16 @@ http://ionicframework.com/docs/theming/ */
 .overflow-x-auto-custome {
   overflow-x: scroll;
 }
+.overflow-x-auto-custome2 {
+  overflow-x: scroll;
+}
 @media (min-width: 768px) {
   .overflow-x-auto-custome {
+    overflow-x: hidden;
+  }
+}
+@media (min-width: 1024px) {
+  .overflow-x-auto-custome2 {
     overflow-x: hidden;
   }
 }
