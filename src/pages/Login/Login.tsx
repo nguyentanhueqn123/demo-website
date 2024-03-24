@@ -51,6 +51,12 @@ const Login: React.FC = () => {
     <IonContent>
       <section className="bg-[url('/public/images/bg-main.png')] bg-cover bg-no-repeat h-screen">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+          <ul>
+            Test Account:
+            <li>- Email: eve.holt@reqres.in</li>
+            <li>- Password: 123456</li>
+          </ul>
+
           <div className="flex items-center mb-6 text-2xl font-semibold text-gray-900">
             <img
               className="w-10 h-10 mr-2"
@@ -62,8 +68,9 @@ const Login: React.FC = () => {
           <div className="w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <IonLabel className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-                Login eve.holt@reqres.in
+                Login
               </IonLabel>
+
               <div className="space-y-4 md:space-y-6">
                 <IonInput
                   autoFocus
