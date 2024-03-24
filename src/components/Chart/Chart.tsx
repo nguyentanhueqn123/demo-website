@@ -126,7 +126,7 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
       legend
         .append("text")
         .attr("x", 20)
-        .attr("y", i * 20 + 10)
+        .attr("y", i * 20 + 8)
         .text(label)
         .attr("alignment-baseline", "middle");
     });
