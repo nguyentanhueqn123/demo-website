@@ -110,10 +110,10 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     g.on("mousemove", function (event) {
       const [xPos, yPos] = d3.pointer(event);
       const selectedDate = x.invert(xPos);
-      const formattedDate = format(selectedDate, "dd/MM/yyyy");
+      const formattedDate = format(selectedDate, "dd/MM/yy");
 
       const tooltipData = data.find((item) => {
-        const itemDate = format(new Date(item.Date), "dd/MM/yyyy");
+        const itemDate = format(new Date(item.Date), "dd/MM/yy");
         return itemDate == formattedDate;
       });
 
