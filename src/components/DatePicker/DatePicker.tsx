@@ -35,29 +35,33 @@ export const FilterToolbar: React.FC<FilterToolbarProp> = ({
     // console.log(">>  Đến ngày: ", e.detail.value);
   };
   return (
-    <div className="container-datepicker">
-      <IonLabel>Từ Ngày: </IonLabel>
-      <div className="container-date">
-        <IonDatetimeButton datetime="datetimeFrom"></IonDatetimeButton>
-        <IonModal keepContentsMounted={true}>
-          <IonDatetime
-            id="datetimeFrom"
-            locale="vi-VN"
-            onIonChange={fromHandle}
-          ></IonDatetime>
-        </IonModal>
+    <div className="p-4">
+      <h5>Filter</h5>
+      <div className="flex justify-start items-center">
+        <IonLabel>From Date: </IonLabel>
+        <div className="ml-3">
+          <IonDatetimeButton datetime="datetimeFrom"></IonDatetimeButton>
+          <IonModal keepContentsMounted={true}>
+            <IonDatetime
+              id="datetimeFrom"
+              locale="vi-VN"
+              onIonChange={fromHandle}
+            ></IonDatetime>
+          </IonModal>
+        </div>
       </div>
-      <div style={{ paddingLeft: "2.5rem" }}></div>
-      <div className="container-date">
-        <IonLabel>Đến Ngày: </IonLabel>
-        <IonDatetimeButton datetime="datetimeTo"></IonDatetimeButton>
-        <IonModal keepContentsMounted={true}>
-          <IonDatetime
-            id="datetimeTo"
-            locale="vi-VN"
-            onIonChange={toHandle}
-          ></IonDatetime>
-        </IonModal>
+      <div className="flex justify-start items-center mt-3">
+        <IonLabel>To Date: </IonLabel>
+        <div className="ml-3">
+          <IonDatetimeButton datetime="datetimeTo"></IonDatetimeButton>
+          <IonModal keepContentsMounted={true}>
+            <IonDatetime
+              id="datetimeTo"
+              locale="vi-VN"
+              onIonChange={toHandle}
+            ></IonDatetime>
+          </IonModal>
+        </div>
       </div>
     </div>
   );
