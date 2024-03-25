@@ -21,6 +21,9 @@ http://ionicframework.com/docs/theming/ */
     overflow-x: hidden;
   }
 }
+.table-v2 {
+  display: none;
+}
 
 :root {
   /** primary **/
